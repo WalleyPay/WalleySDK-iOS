@@ -3,9 +3,6 @@ import WebKit
 class WebViewController: UIViewController {
     
     private let webView: WKWebView = .init()
-    private let navigationBar: UINavigationBar = .init()
-    
-    private let navigationBarHeight: CGFloat = 44
     
     func loadUrl(_ url: URL) {
         let urlRequest = URLRequest(url: url)
@@ -22,16 +19,11 @@ class WebViewController: UIViewController {
             webView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             webView.rightAnchor.constraint(equalTo: view.rightAnchor)
         ])
-        webView.scrollView.contentInset.top = navigationBarHeight
-        
-        view.addSubview(navigationBar)
-        navigationBar.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            navigationBar.topAnchor.constraint(equalTo: view.topAnchor),
-            navigationBar.leftAnchor.constraint(equalTo: view.leftAnchor),
-            navigationBar.rightAnchor.constraint(equalTo: view.rightAnchor),
-            navigationBar.heightAnchor.constraint(equalToConstant: navigationBarHeight)
-        ])
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(doneAction))
+    }
+    
+    @objc private func doneAction() {
+        navigationController?.dismiss(animated: true)
     }
     
 }

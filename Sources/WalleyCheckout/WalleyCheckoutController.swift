@@ -1,57 +1,17 @@
 import UIKit
 import WebKit
 
-public class WalleyCheckoutController: UIViewController {
+final public class WalleyCheckoutController: UIViewController {
     
     private var walleyCheckoutView: WalleyCheckoutView = .init()
     
-    /// Credentials used when loading checkout view
-    public var credentials: Credentials? {
-        set {
-            walleyCheckoutView.credentials = newValue
-        }
-        get {
-            walleyCheckoutView.credentials
-        }
-    }
-    
-    /// Sends checkout events and view height updates
-    public weak var delegate: WalleyCheckoutViewDelegate? {
+    /// Delegate that handles WalleyCheckout events
+    public weak var delegate: WalleyCheckoutDelegate? {
         set {
             walleyCheckoutView.delegate = newValue
         }
         get {
             walleyCheckoutView.delegate
-        }
-    }
-    
-    /// Set this to a hexadecimal color code to change the background color of call to action buttons.
-    ///
-    /// Format as the following example: `#582f87`.
-    ///
-    /// Button text color will automatically be set to dark gray instead of white if not enough contrast according to WCAG 2.0 level AA for large text.
-    public var actionColorHex: String? {
-        set {
-            walleyCheckoutView.actionColorHex = newValue
-        }
-        get {
-            walleyCheckoutView.actionColorHex
-        }
-    }
-    
-    /// The display language.
-    ///
-    /// Currently supported combinations are: `sv-SE`, `en-SE`, `nb-NO`, `fi-FI`, `sv-FI`, `da-DK` and `en-DE`. Both `sv-SE` and `en-SE` are available for use with swedish partners.
-    ///
-    /// In the other cases, the country part must match the country code used when initializing the checkout session or it will be ignored.
-    ///
-    /// Setting this attribute is optional and will only be of interest when there is more than one language for any single country.
-    public var language: String? {
-        set {
-            walleyCheckoutView.language = newValue
-        }
-        get {
-            walleyCheckoutView.language
         }
     }
 
@@ -68,8 +28,14 @@ public class WalleyCheckoutController: UIViewController {
         ])
     }
     
-    public func loadCheckout(_ checkout: Checkout) {
-        walleyCheckoutView.loadCheckout(checkout)
+    /// Loads checkout view using public token
+    ///
+    /// - Parameters:
+    ///    - publicToken: Token generated using Walley backend service
+    ///    - actionColor: Hexadecimal color code to change the background color of call to action buttons
+    ///    - language: The display language
+    public func loadCheckout(publicToken: String, actionColor: String? = nil, language: String? = nil) {
+        walleyCheckoutView.loadCheckout(publicToken: publicToken, actionColor: actionColor, language: language)
     }
 
 }

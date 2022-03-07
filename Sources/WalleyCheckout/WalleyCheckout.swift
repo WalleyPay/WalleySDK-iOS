@@ -7,8 +7,6 @@ final public class WalleyCheckout {
         case test
     }
     
-    private let network: Network = .init()
-    
     private var frontendHost: String {
         switch Self.environment {
         case .production: return "https://checkout.collector.se"
@@ -16,33 +14,14 @@ final public class WalleyCheckout {
         }
     }
     
-    private var backendHost: String {
-        switch Self.environment {
-        case .production: return "https://api.checkout.walleypay.com"
-        case .test: return "https://api.checkout.uat.walleydev.com"
-        }
-    }
-    
     public static var environment: Environment = .production
     
-    public var credentials: Credentials? {
-        set { network.credentials = newValue }
-        get { network.credentials }
-    }
-    
-    public func initCheckout(_ checkout: Checkout, completion: @escaping (Result<InitCheckoutData, Error>) -> Void) {
-        let jsonBodyData = try! JSONEncoder().encode(checkout)
-        let jsonBody = String(data: jsonBodyData, encoding: .utf8)!
-        network.request(
-            method: "POST",
-            host: backendHost,
-            path: "/checkout",
-            httpBody: jsonBody
-        ) { result in
-            completion(result)
-        }
-    }
-    
+    /// Generate walley checkout script tag using public token.
+    ///
+    /// - Parameters:
+    ///    - publicToken: Token generated using Walley backend service
+    ///    - actionColor: Hexadecimal color code to change the background color of call to action buttons
+    ///    - language: The display language
     public func createCheckoutSnippet(publicToken: String, actionColorHex: String? = nil, language: String? = nil) -> String {
         """
         <script
@@ -55,13 +34,19 @@ final public class WalleyCheckout {
         """
     }
     
-    public func createCheckoutHTML(publicToken: String, actionColorHex: String? = nil, language: String? = nil) -> String {
+    /// Generate html containing walley checkout script tag using public token.
+    ///
+    /// - Parameters:
+    ///    - publicToken: Token generated using Walley backend service
+    ///    - actionColor: Hexadecimal color code to change the background color of call to action buttons
+    ///    - language: The display language
+    public func createCheckoutHTML(publicToken: String, actionColor: String? = nil, language: String? = nil) -> String {
         """
         <head>
           <meta name="viewport" content="width=device-width, initial-scale=1.0">
         </head>
         <body style='margin:0'>
-          \(createCheckoutSnippet(publicToken: publicToken, actionColorHex: actionColorHex, language: language))
+          \(createCheckoutSnippet(publicToken: publicToken, actionColorHex: actionColor, language: language))
         </body>
         """
     }

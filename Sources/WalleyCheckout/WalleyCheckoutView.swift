@@ -1,12 +1,27 @@
 import UIKit
 import WebKit
 
-public protocol WalleyCheckoutViewDelegate: AnyObject {
+public protocol WalleyCheckoutDelegate: AnyObject {
+    
+    /// Recieve WalleyCheckout events
     func walleyCheckoutView(_ walleyCheckoutView: WalleyCheckoutView, didSendEvent event: WalleyCheckoutEvent)
+    
+    /// Called when WalleyCheckout view has updated height. The view has updated its intrinsic content size.
     func walleyCheckoutView(_ walleyCheckoutView: WalleyCheckoutView, didUpdateHeight height: CGFloat)
+    
+    /// Called when user taps on a link inside WalleyCheckout UI.
+    ///
+    /// - Returns: Return true if WalleyCheckout should use default web view presentation.
+    func walleyCheckoutView(_ walleyCheckoutView: WalleyCheckoutView, shouldOpenUrl: URL) -> Bool
 }
 
-public class WalleyCheckoutView: UIView {
+extension WalleyCheckoutDelegate {
+    func walleyCheckoutView(_ walleyCheckoutView: WalleyCheckoutView, shouldOpenUrl: URL) -> Bool {
+        return true
+    }
+}
+
+final public class WalleyCheckoutView: UIView {
     
     private let webView: WKWebView = .init()
     
@@ -14,34 +29,8 @@ public class WalleyCheckoutView: UIView {
     private let navigationDelegate: NavigationDelegate = .init()
     private let walleyCheckout: WalleyCheckout = .init()
     
-    /// Credentials used when loading checkout view
-    public var credentials: Credentials? {
-        set {
-            walleyCheckout.credentials = newValue
-        }
-        get {
-            walleyCheckout.credentials
-        }
-    }
-    
     /// Sends checkout events and view height updates
-    public weak var delegate: WalleyCheckoutViewDelegate?
-
-    /// Set this to a hexadecimal color code to change the background color of call to action buttons.
-    ///
-    /// Format as the following example: `#582f87`.
-    ///
-    /// Button text color will automatically be set to dark gray instead of white if not enough contrast according to WCAG 2.0 level AA for large text.
-    public var actionColorHex: String?
-    
-    /// The display language.
-    ///
-    /// Currently supported combinations are: `sv-SE`, `en-SE`, `nb-NO`, `fi-FI`, `sv-FI`, `da-DK` and `en-DE`. Both `sv-SE` and `en-SE` are available for use with swedish partners.
-    ///
-    /// In the other cases, the country part must match the country code used when initializing the checkout session or it will be ignored.
-    ///
-    /// Setting this attribute is optional and will only be of interest when there is more than one language for any single country.
-    public var language: String?
+    public weak var delegate: WalleyCheckoutDelegate?
     
     fileprivate var webViewHeight: CGFloat = 0 {
         didSet {
@@ -73,29 +62,26 @@ public class WalleyCheckoutView: UIView {
         ])
         setupWalleyEvents()
         setupHeightUpdateEvent()
-        webView.customUserAgent = Network.userAgent
+        webView.customUserAgent = "WalleyPaySDK/1.0 iOS/\(UIDevice.current.systemVersion)/\(UIDevice.current.model ?? "")"
         webView.scrollView.alwaysBounceVertical = false
         webView.navigationDelegate = navigationDelegate
         scriptMessageHandler.checkoutView = self
         navigationDelegate.checkoutView = self
     }
     
-    public func loadCheckout(_ checkout: Checkout) {
-        walleyCheckout.initCheckout(checkout) { (result: Result<InitCheckoutData, Error>) in
-            switch result {
-            case .success(let response):
-                DispatchQueue.main.async {
-                    let stringToLoad = self.walleyCheckout.createCheckoutHTML(
-                        publicToken: response.publicToken,
-                        actionColorHex: self.actionColorHex,
-                        language: self.language
-                    )
-                    self.webView.loadHTMLString(stringToLoad, baseURL: nil)
-                }
-            case .failure(let error):
-                print(error.localizedDescription)
-            }
-        }
+    /// Loads checkout view using public token
+    ///
+    /// - Parameters:
+    ///    - publicToken: Token generated using Walley backend service
+    ///    - actionColor: Hexadecimal color code to change the background color of call to action buttons
+    ///    - language: The display language
+    public func loadCheckout(publicToken: String, actionColor: String? = nil, language: String? = nil) {
+        let stringToLoad = self.walleyCheckout.createCheckoutHTML(
+            publicToken: publicToken,
+            actionColor: actionColor,
+            language: language
+        )
+        self.webView.loadHTMLString(stringToLoad, baseURL: nil)
     }
     
     private func setupWalleyEvents() {
@@ -148,11 +134,6 @@ class NavigationDelegate: NSObject, WKNavigationDelegate {
     weak var checkoutView: WalleyCheckoutView?
     
     public func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
-//        guard let checkoutView = checkoutView,
-//        let checkout = checkoutView.checkout else {
-//            decisionHandler(.cancel)
-//            return
-//        }
         if let urlString = navigationAction.request.url?.absoluteString {
             if urlString.hasPrefix("bankid://"), let url = URL(string: urlString) {
                 if UIApplication.shared.canOpenURL(url) {
@@ -166,10 +147,14 @@ class NavigationDelegate: NSObject, WKNavigationDelegate {
                 } else {
                     showMessage(title: "Swish app not installed")
                 }
-            } else if let url = navigationAction.request.url, navigationAction.navigationType == .linkActivated {
+            } else if let url = navigationAction.request.url,
+                      navigationAction.navigationType == .linkActivated,
+                      let checkoutView = checkoutView,
+                      checkoutView.delegate?.walleyCheckoutView(checkoutView, shouldOpenUrl: url) == true {
                 let vc = WebViewController()
                 vc.loadUrl(url)
-                webView.parentViewController?.present(vc, animated: true)
+                let nc = UINavigationController(rootViewController: vc)
+                checkoutView.parentViewController?.present(nc, animated: true)
             }
         }
         decisionHandler(.allow)
