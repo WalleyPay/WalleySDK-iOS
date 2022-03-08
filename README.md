@@ -19,7 +19,7 @@ Walley Checkout SDK for iOS uses Swift Package Manager. To add the SDK as a depe
 
 ```
 dependencies: [
-    .package(url: "https://github.com/FutureMemories/WalleySDK-iOS.git", .upToNextMajor(from: "1.0.0"))
+    .package(url: "https://github.com/WalleyPay/WalleySDK-iOS.git", .upToNextMajor(from: "1.0.0"))
 ]
 ```
 
