@@ -71,6 +71,20 @@ vc.loadCheckout(publicToken: "<Your token>")
 present(vc, animated: true)
 ```
 
+### Swedish BankID and Swish
+
+In order to support Swedish BankID and Swish the app's `Info.plist` must contain `LSApplicationQueriesSchemes` with the following values:
+
+```
+...
+<key>LSApplicationQueriesSchemes</key>
+<array>
+    <string>bankid</string>
+    <string>swish</string>
+</array>
+...
+```
+
 ### Test data
 
 [Walley Checkout test data](https://dev.walleypay.com/docs/checkout/test-data)
