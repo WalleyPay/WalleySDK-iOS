@@ -12,11 +12,11 @@ public protocol WalleyCheckoutDelegate: AnyObject {
     /// Called when user taps on a link inside WalleyCheckout UI.
     ///
     /// - Returns: Return true if WalleyCheckout should use default web view presentation.
-    func walleyCheckoutView(_ walleyCheckoutView: WalleyCheckoutView, shouldOpenUrl: URL) -> Bool
+    func walleyCheckoutView(_ walleyCheckoutView: WalleyCheckoutView, shouldOpenUrl url: URL) -> Bool
 }
 
 extension WalleyCheckoutDelegate {
-    func walleyCheckoutView(_ walleyCheckoutView: WalleyCheckoutView, shouldOpenUrl: URL) -> Bool {
+    func walleyCheckoutView(_ walleyCheckoutView: WalleyCheckoutView, shouldOpenUrl url: URL) -> Bool {
         return true
     }
 }
