@@ -84,6 +84,15 @@ final public class WalleyCheckoutView: UIView {
         self.webView.loadHTMLString(stringToLoad, baseURL: nil)
     }
     
+    /// Register a custom script message handler to recieve script messages from a custom page for when a purchase is completed
+    ///
+    /// - Parameters:
+    ///   - handler: The script message handler to register
+    ///   - name: The name of the message handler.
+    public func registerScriptMessageHandler(_ handler: WKScriptMessageHandler, name: String) {
+        webView.configuration.userContentController.add(handler, name: name)
+    }
+    
     private func setupWalleyEvents() {
         let listenerName = "iosListener"
         for event in WalleyCheckoutEvent.allCases {

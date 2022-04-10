@@ -37,6 +37,15 @@ final public class WalleyCheckoutController: UIViewController {
     public func loadCheckout(publicToken: String, actionColor: String? = nil, language: String? = nil) {
         walleyCheckoutView.loadCheckout(publicToken: publicToken, actionColor: actionColor, language: language)
     }
+    
+    /// Register a custom script message handler to recieve script messages from a custom page for when a purchase is completed
+    ///
+    /// - Parameters:
+    ///   - handler: The script message handler to register
+    ///   - name: The name of the message handler.
+    public func registerScriptMessageHandler(_ handler: WKScriptMessageHandler, name: String) {
+        walleyCheckoutView.registerScriptMessageHandler(handler, name: name)
+    }
 
 }
 
