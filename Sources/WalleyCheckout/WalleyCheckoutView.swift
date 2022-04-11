@@ -23,7 +23,7 @@ extension WalleyCheckoutDelegate {
 
 final public class WalleyCheckoutView: UIView {
     
-    private let webView: WKWebView = .init()
+    internal let webView: WKWebView = .init()
     
     private let scriptMessageHandler: ScriptMessageHandler = .init()
     private let navigationDelegate: NavigationDelegate = .init()
