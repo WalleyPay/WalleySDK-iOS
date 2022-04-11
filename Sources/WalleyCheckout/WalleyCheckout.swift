@@ -15,6 +15,9 @@ final public class WalleyCheckout {
     }
     
     public static var environment: Environment = .production
+
+    /// The expected url to be redirected to once the purchase has been completed.
+    public static var redirectPageUrl: String?
     
     /// Generate walley checkout script tag using public token.
     ///

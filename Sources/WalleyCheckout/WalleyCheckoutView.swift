@@ -3,6 +3,9 @@ import WebKit
 
 public protocol WalleyCheckoutDelegate: AnyObject {
     
+    ///  Called when the view has been redirected to the url specified in WalleyCheckout.redirectPageUrl.
+    func walleyCheckoutView(_ walleyCheckoutView: WalleyCheckoutView, didRedirectToPageUrl url: URL)
+
     /// Recieve WalleyCheckout events
     func walleyCheckoutView(_ walleyCheckoutView: WalleyCheckoutView, didSendEvent event: WalleyCheckoutEvent)
     
@@ -155,6 +158,11 @@ class NavigationDelegate: NSObject, WKNavigationDelegate {
                 vc.loadUrl(url)
                 let nc = UINavigationController(rootViewController: vc)
                 checkoutView.parentViewController?.present(nc, animated: true)
+            } else if let url = navigationAction.request.url,
+                      let redirectPageUrlString = WalleyCheckout.redirectPageUrl,
+                      urlString.hasPrefix(redirectPageUrlString),
+                      let checkoutView = checkoutView {
+                checkoutView.delegate?.walleyCheckoutView(checkoutView, didRedirectToPageUrl: url)
             }
         }
         decisionHandler(.allow)
