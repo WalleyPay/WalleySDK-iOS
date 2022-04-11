@@ -19,6 +19,8 @@ public protocol WalleyCheckoutDelegate: AnyObject {
 }
 
 extension WalleyCheckoutDelegate {
+    func walleyCheckoutView(_ walleyCheckoutView: WalleyCheckoutView, didRedirectToPageUrl url: URL) {}
+
     func walleyCheckoutView(_ walleyCheckoutView: WalleyCheckoutView, shouldOpenUrl url: URL) -> Bool {
         return true
     }
