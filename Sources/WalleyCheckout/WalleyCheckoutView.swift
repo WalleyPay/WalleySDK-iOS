@@ -23,7 +23,7 @@ extension WalleyCheckoutDelegate {
 
 final public class WalleyCheckoutView: UIView {
     
-    private let webView: WKWebView = .init()
+    internal let webView: WKWebView = .init()
     
     private let scriptMessageHandler: ScriptMessageHandler = .init()
     private let navigationDelegate: NavigationDelegate = .init()
@@ -82,6 +82,15 @@ final public class WalleyCheckoutView: UIView {
             language: language
         )
         self.webView.loadHTMLString(stringToLoad, baseURL: nil)
+    }
+    
+    /// Register a custom script message handler to recieve script messages from a custom page for when a purchase is completed
+    ///
+    /// - Parameters:
+    ///   - handler: The script message handler to register
+    ///   - name: The name of the message handler.
+    public func registerScriptMessageHandler(_ handler: WKScriptMessageHandler, name: String) {
+        webView.configuration.userContentController.add(handler, name: name)
     }
     
     private func setupWalleyEvents() {
