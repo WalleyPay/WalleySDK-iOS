@@ -59,4 +59,5 @@ public enum WalleyCheckoutEvent: String, CaseIterable {
     case unlocked = "walleyCheckoutUnlocked"
     case resumed = "walleyCheckoutResumed"
     case shippingUpdated = "walleyCheckoutShippingUpdated"
+    case purchaseCompleted = "walleyCheckoutPurchaseCompleted"
 }
