@@ -1,6 +1,6 @@
 # Walley Checkout iOS SDK
 
-Klarna Checkout iOS SKD for native app integration.
+Walley Checkout iOS SDK for native app integration.
 
 ## Requirements
 
