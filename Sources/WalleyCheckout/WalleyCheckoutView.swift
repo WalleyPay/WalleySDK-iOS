@@ -62,7 +62,7 @@ final public class WalleyCheckoutView: UIView {
         ])
         setupWalleyEvents()
         setupHeightUpdateEvent()
-        webView.customUserAgent = "WalleyPaySDK/1.0 iOS/\(UIDevice.current.systemVersion)/\(UIDevice.current.model ?? "")"
+        webView.customUserAgent = "\(webView.customUserAgent) WalleyPaySDK/1.0 iOS/\(UIDevice.current.systemVersion)/\(UIDevice.current.model ?? "")"
         webView.scrollView.alwaysBounceVertical = false
         webView.navigationDelegate = navigationDelegate
         scriptMessageHandler.checkoutView = self
