@@ -27,7 +27,7 @@ final public class WalleyCheckout {
         <script
           src="\(frontendHost)/collector-checkout-loader.js"
           data-token="\(publicToken)"
-          data-version="v2"
+          data-webview="true"
           \(actionColorHex.map { "data-action-color=\"\($0)\"\n" } ?? "" )
           \(language.map { "data-lang=\"\($0)\"\n" } ?? "" )
         ></script>
