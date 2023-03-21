@@ -6,13 +6,15 @@ final public class WalleyCheckout {
         case production
         case test
         case ci
+        case uat
     }
     
     private var frontendHost: String {
         switch Self.environment {
         case .production: return "https://checkout.collector.se"
         case .test: return "https://checkout-uat.collector.se"
-        case .ci: return "https://checkout-ci.collector.se/test.html"
+        case .ci: return "https://checkout-ci.collector.se"
+        case .uat: return "https://checkout-uat.collector.se"
         }
     }
     
