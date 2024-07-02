@@ -12,7 +12,7 @@ final public class WalleyCheckout {
     private var frontendHost: String {
         switch Self.environment {
         case .production: return "https://checkout.walleypay.com"
-        case .test: return "hhttps://checkout.uat.walleydev.com"
+        case .test: return "https://checkout.uat.walleydev.com"
         case .ci: return "https://checkout.ci.walleydev.com"
         case .uat: return "https://checkout.uat.walleydev.com"
         }
