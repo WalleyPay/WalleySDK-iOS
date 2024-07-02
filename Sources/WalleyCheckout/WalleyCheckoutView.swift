@@ -118,10 +118,10 @@ final public class WalleyCheckoutView: UIView {
         )
         webView.configuration.userContentController.addUserScript(script)
     }
-    
+    // BREAKING CHANGE FROM collector-checkout-iframe to walley-checkout-iframe
     private func setupHeightUpdateEvent() {
         let scriptSource = """
-            const element = document.querySelector('.collector-checkout-iframe')
+            const element = document.querySelector('.walley-checkout-iframe')
             const resizeObserver = new ResizeObserver(entries => {
                 const entry = entries[0]
                 window.webkit.messageHandlers.sizeNotification.postMessage({height: entry.contentRect.height})
@@ -156,6 +156,12 @@ class NavigationDelegate: NSObject, WKNavigationDelegate {
                     UIApplication.shared.open(url)
                 } else {
                     showMessage(title: "Swish app not installed")
+                }
+            } else if urlString.hasPrefix("vipps://"), let url = URL(string: urlString) {
+                if UIApplication.shared.canOpenURL(url) {
+                    UIApplication.shared.open(url)
+                } else {
+                    showMessage(title: "Vipps app not installed")
                 }
             } else if let url = navigationAction.request.url,
                       navigationAction.navigationType == .linkActivated,
