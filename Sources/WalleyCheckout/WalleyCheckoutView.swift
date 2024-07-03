@@ -76,11 +76,17 @@ final public class WalleyCheckoutView: UIView {
     ///    - publicToken: Token generated using Walley backend service
     ///    - actionColor: Hexadecimal color code to change the background color of call to action buttons
     ///    - language: The display language
-    public func loadCheckout(publicToken: String, actionColor: String? = nil, language: String? = nil) {
+    ///    - actionTextColor: Override the automatic text color of call to action buttons. Valid values are black, white, #000000 and #ffffff.
+    ///    - padding: Padding inside the iFrame, set to none to cancel left and right padding.
+    ///    - containerId: ContainerID for where to render checkout iFrame inside of.
+    public func loadCheckout(publicToken: String, actionColor: String? = nil, language: String? = nil, actionTextColor: String? = nil, padding: String? = nil, containerId: String? = nil) {
         let stringToLoad = self.walleyCheckout.createCheckoutHTML(
             publicToken: publicToken,
             actionColor: actionColor,
-            language: language
+            language: language,
+            actionTextColor: actionTextColor,
+            padding: padding,
+            containerId: containerId
         )
         self.webView.loadHTMLString(stringToLoad, baseURL: nil)
     }

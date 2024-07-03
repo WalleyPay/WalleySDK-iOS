@@ -26,6 +26,9 @@ final public class WalleyCheckout {
     ///    - publicToken: Token generated using Walley backend service
     ///    - actionColor: Hexadecimal color code to change the background color of call to action buttons
     ///    - language: The display language
+    ///    - actionTextColor: Override the automatic text color of call to action buttons. Valid values are black, white, #000000 and #ffffff.
+    ///    - padding: Padding inside the iFrame, set to none to cancel left and right padding.
+    ///    - containerId: ContainerID for where to render checkout iFrame inside of.
     public func createCheckoutSnippet(publicToken: String, actionColorHex: String? = nil, language: String? = nil, actionTextColor: String? = nil, padding: String? = nil, containerId: String? = nil ) -> String {
         """
         <script
@@ -47,6 +50,9 @@ final public class WalleyCheckout {
     ///    - publicToken: Token generated using Walley backend service
     ///    - actionColor: Hexadecimal color code to change the background color of call to action buttons
     ///    - language: The display language
+    ///    - actionTextColor: Override the automatic text color of call to action buttons. Valid values are black, white, #000000 and #ffffff.
+    ///    - padding: Padding inside the iFrame, set to none to cancel left and right padding.
+    ///    - containerId: ContainerID for where to render checkout iFrame inside of.
     public func createCheckoutHTML(publicToken: String, actionColor: String? = nil, language: String? = nil, actionTextColor: String? = nil, padding: String? = nil, containerId: String? = nil) -> String {
         """
         <head>
