@@ -169,6 +169,12 @@ class NavigationDelegate: NSObject, WKNavigationDelegate {
                 } else {
                     showMessage(title: "Vipps app not installed")
                 }
+            } else if urlString.hasPrefix("vippsMT://"), let url = URL(string: urlString) {
+                if UIApplication.shared.canOpenURL(url) {
+                    UIApplication.shared.open(url)
+                } else {
+                    showMessage(title: "Vipps MT app not installed")
+                }
             } else if let url = navigationAction.request.url,
                       navigationAction.navigationType == .linkActivated,
                       let checkoutView = checkoutView,

@@ -73,7 +73,7 @@ present(vc, animated: true)
 
 ### Swedish BankID and Swish
 
-In order to support Swedish BankID and Swish the app's `Info.plist` must contain `LSApplicationQueriesSchemes` with the following values:
+In order to support Swedish BankID, Swish and Vipps, the app's `Info.plist` must contain `LSApplicationQueriesSchemes` with the following values:
 
 ```
 ...
@@ -81,6 +81,8 @@ In order to support Swedish BankID and Swish the app's `Info.plist` must contain
 <array>
     <string>bankid</string>
     <string>swish</string>
+    <string>vipps</string>
+
 </array>
 ...
 ```
