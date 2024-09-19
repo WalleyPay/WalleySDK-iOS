@@ -2,6 +2,14 @@
 
 Walley Checkout iOS SDK for native app integration.
 
+## Change log
+
+### Added 
+- Script element attributes to set padding between checkout and frame and a containerID.
+
+### Changed
+- Endpoints changed to new walleypay endpoints.
+
 ## Requirements
 
 - Swift 5.5
