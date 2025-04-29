@@ -37,8 +37,9 @@ final public class WalleyCheckoutController: UIViewController {
     ///    - actionTextColor: Override the automatic text color of call to action buttons. Valid values are black, white, #000000 and #ffffff.
     ///    - padding: Padding inside the iFrame, set to none to cancel left and right padding.
     ///    - containerId: ContainerID for where to render checkout iFrame inside of.
-    public func loadCheckout(publicToken: String, actionColor: String? = nil, language: String? = nil, actionTextColor: String? = nil, padding: String? = nil, containerId: String? = nil) {
-        walleyCheckoutView.loadCheckout(publicToken: publicToken, actionColor: actionColor, language: language, actionTextColor: actionTextColor, padding: padding, containerId: containerId)
+    ///    - baseURL: Base URL for the HTML content. This needs to be set when using Apple Pay
+    public func loadCheckout(publicToken: String, actionColor: String? = nil, language: String? = nil, actionTextColor: String? = nil, padding: String? = nil, containerId: String? = nil, baseURL: URL? = nil) {
+        walleyCheckoutView.loadCheckout(publicToken: publicToken, actionColor: actionColor, language: language, actionTextColor: actionTextColor, padding: padding, containerId: containerId, baseURL: baseURL)
     }
     
     /// Register a custom script message handler to recieve script messages from a custom page for when a purchase is completed

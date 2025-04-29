@@ -4,10 +4,12 @@ Walley Checkout iOS SDK for native app integration.
 
 ## Change log
 
-### Added 
+### Added
+
 - Script element attributes to set padding between checkout and frame and a containerID.
 
 ### Changed
+
 - Endpoints changed to new walleypay endpoints.
 
 ## Requirements
@@ -93,6 +95,14 @@ In order to support Swedish BankID, Swish and Vipps, the app's `Info.plist` must
 
 </array>
 ...
+```
+
+### Apple Pay
+
+In order to support Apple Pay, the `baseURL` needs to be set.
+
+```
+vc.loadCheckout(publicToken: "<Your token>", baseURL: URL(string: "https://example.com"))
 ```
 
 ### Test data
