@@ -32,7 +32,7 @@ final public class WalleyCheckout {
     public func createCheckoutSnippet(publicToken: String, actionColorHex: String? = nil, language: String? = nil, actionTextColor: String? = nil, padding: String? = nil, containerId: String? = nil ) -> String {
         """
         <script
-          src="\(frontendHost)/walley-checkout-loader.js"
+          src="\(frontendHost)/collector-checkout-loader.js"
           data-token="\(publicToken)"
           data-webview="true"
           \(actionColorHex.map { "data-action-color=\"\($0)\"\n" } ?? "" )
